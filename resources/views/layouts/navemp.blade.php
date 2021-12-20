@@ -13,7 +13,20 @@
   <link rel="stylesheet" href="../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
   <!-- Page plugins -->
   <!-- Argon CSS -->
-  <link rel="stylesheet" href="../assets/css/argon.css?v=1.2.0" type="text/css">
+  <link type="text/css" href="/assets/css/argon.min.css" rel="stylesheet">
+
+  <!-- Scripts -->
+  <script src="{{ asset('js/app.js') }}" defer></script>
+
+  <!-- Fonts -->
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+
+  <!-- Layout css -- coloquen sus estilos css aqui -->
+  @yield('styleCSS')
+
+  <!-- <link rel="stylesheet" href="../assets/css/bootstrap/bootstrap.css" type="text/css"> -->
+
 </head>
 
 <body>
@@ -32,13 +45,13 @@
           <!-- Nav items -->
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" href="{{url('/Home')}}">
+              <a class="nav-link active" href="{{url('/admin')}}">
                 <i class="ni ni-tv-2 text-primary"></i>
                 <span class="nav-link-text">Dashboard</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{url('showprofile')}}">
+              <a class="nav-link" href="{{url('profile')}}">
                 <i class="ni ni-single-02 text-yellow"></i>
                 <span class="nav-link-text">Profile</span>
               </a>
@@ -57,24 +70,30 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{url('patient_show')}}">
-                <i class="ni ni-single-copy-04 text-info"></i>
+              <i class="fab fa-accessible-icon"></i>
                 <span class="nav-link-text">Patient</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="register.html">
+              <a class="nav-link" href="{{url('register')}}">
                 <i class="ni ni-circle-08 text-pink"></i>
                 <span class="nav-link-text">Add new user</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{{url('ward_show')}}">
-              <i class="fas fa-clipboard-list"></i>
+              <i class="fas fa-hotel"></i>
                 <span class="nav-link-text">Ward & Beds</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="upgrade.html">
+              <a class="nav-link" href="{{url('department')}}">
+              <i class="fas fa-address-book"></i>
+                <span class="nav-link-text">Department</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
                 <i class="ni ni-email-83 text-dark"></i>
                 <span class="nav-link-text">Email</span>
               </a>
@@ -86,30 +105,36 @@
           <h6 class="navbar-heading p-0 text-muted">
             <span class="docs-normal">Documentation</span>
           </h6>
-          <!-- Navigation -->
-          <ul class="navbar-nav mb-md-3">
+           <!-- Navigation -->
+           <ul class="navbar-nav mb-md-3">
             <li class="nav-item">
-              <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html" target="_blank">
+              <a class="nav-link" href="{{url('apointment')}}" >
                 <i class="ni ni-spaceship"></i>
-                <span class="nav-link-text">Getting started</span>
+                <span class="nav-link-text">Make Apointment</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html" target="_blank">
+              <a class="nav-link" href="{{url('doctor_show')}}" >
                 <i class="ni ni-palette"></i>
-                <span class="nav-link-text">Foundation</span>
+                <span class="nav-link-text">Doctors</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html" target="_blank">
+              <a class="nav-link" href="{{url('department')}}" >
                 <i class="ni ni-ui-04"></i>
-                <span class="nav-link-text">Components</span>
+                <span class="nav-link-text">Departments</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="https://demos.creative-tim.com/argon-dashboard/docs/plugins/charts.html" target="_blank">
-                <i class="ni ni-chart-pie-35"></i>
-                <span class="nav-link-text">Plugins</span>
+            <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    <span class="nav-link-text"><i class="ni ni-user-run"></i></span>{{ __('Logout') }}
+                                </a>
+                  
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
               </a>
             </li>
           </ul>
@@ -371,20 +396,12 @@
     </nav>
     <!-- Header -->
     <!-- Header -->
-    <div class="header bg-primary pb-6">
-      <div class="container-fluid">
-        <div class="header-body">
-          <div class="row align-items-center py-4">
-            <div class="col-lg-6 col-7">
-              <h6 class="h2 text-white d-inline-block mb-0">Employee</h6>
-              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                  <li class="breadcrumb-item"><a href="{{url('/admin')}}"><i class="fas fa-home"></i></a></li>
-                  <li class="breadcrumb-item"><a href="{{url('/admin')}}">Dashboards</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Employee</li>
-                </ol>
-              </nav>
-            </div>
+    
+    @yield('header')
+
+    <main class="py-4">
+            @yield('content')
+    </main>
             
           
 </body>
